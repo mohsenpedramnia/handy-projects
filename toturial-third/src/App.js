@@ -1,59 +1,52 @@
 import React, { Component } from "react";
 import "./App.css";
-import PropTypes from "prop-types";
 
-const Person = ({ img, name, age }) => {
-  return (
-    <article>
-      <img src={img} alt="person" />
-      <h4>name : {name}</h4>
-      <h4>age : {age}</h4>
-    </article>
-  );
-};
-
-Person.propTypes = {
-  img: PropTypes.string,
-  name: PropTypes.string,
-  age: PropTypes.number
-};
-
-class PersonList extends Component {
+class Counter extends Component {
   state = {
-    people: [
+    count: 0
+  };
+
+  handleIncrease = () => {
+    console.log("called first: ", this.state.count);
+    this.setState(
       {
-        id: 1,
-        img: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-        name: "john",
-        age: 24
+        count: this.state.count + 1
       },
-      {
-        id: 2,
-        img: "https://randomuser.me/api/portraits/thumb/men/72.jpg",
-        name: 27,
-        age: "bob"
-      }
-    ]
+      () => console.log("called second:", this.state.count)
+    );
+    // console.log("called third: ", this.state.count);
+  };
+
+  handleDecrease = () => {
+    // console.log("called first: ", this.state.count);
+    this.setState((state, props) => {
+      return { count: state.count - 1 };
+    });
+    this.setState((state, props) => {
+      return { count: state.count - 2 };
+    });
+    // console.log("called third: ", this.state.count);
   };
   render() {
     return (
-      <section>
-        {this.state.people.map(person => (
-          <Person
-            key={person.id}
-            img={person.img}
-            name={person.name}
-            age={person.age}
-          />
-        ))}
-      </section>
+      <>
+        <div style={{ margin: "3rem", fontSize: "2rem" }}>
+          <button type="button" onClick={this.handleDecrease}>
+            decrease
+          </button>
+          <span style={{ margin: "1rem" }}>count: {this.state.count}</span>
+          <button type="button" onClick={this.handleIncrease}>
+            increase
+          </button>
+        </div>
+      </>
     );
   }
 }
 
 class App extends Component {
   render() {
-    return <PersonList />;
+    return <Counter amount="2" />;
   }
 }
 export default App;
